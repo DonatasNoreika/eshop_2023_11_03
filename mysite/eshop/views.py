@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views import generic
-from .models import Product, Order
+from .models import Product, Order, OrderLine
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
@@ -32,6 +32,21 @@ class OrderCreateView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.save()
+        return super().form_valid(form)
+
+
+class OrderLineCreateView(LoginRequiredMixin, generic.CreateView):
+    model = OrderLine
+    fields = ['product', 'quantity']
+    template_name = "orderline_form.html"
+    success_url = "/orders/"
+
+    def get_success_url(self):
+        return reverse('order', kwargs={'pk': self.kwargs['pk']})
+
+    def form_valid(self, form):
+        form.instance.order = Order.objects.get(pk=self.kwargs['pk'])
         form.save()
         return super().form_valid(form)
 
