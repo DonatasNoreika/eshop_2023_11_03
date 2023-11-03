@@ -8,4 +8,7 @@
 <a href="{% url 'order' order.id %}"><p>{{ order }}</p></a>
 <hr>
 {% endfor %}
+<div>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'orders_new' %}">Naujas užsakymas</a>
+</div>
 {% endblock %}
