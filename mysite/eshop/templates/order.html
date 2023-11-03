@@ -8,4 +8,26 @@
 <p><strong>Data: </strong>{{ order.date }}</p>
 <p><strong>Klientas: </strong>{{ order.user }}</p>
 <p><strong>Būsena: </strong>{{ order.status }}</p>
+<table class="table table-striped">
+    <tr>
+        <th>Produktas</th>
+        <th>Kaina</th>
+        <th>Kiekis</th>
+        <th>Suma</th>
+    </tr>
+    {% for line in order.lines.all %}
+    <tr>
+        <td>{{ line.product.name }}</td>
+        <td>{{ line.product.price }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.suma }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Bendra suma:</td>
+        <td>{{ order.total }}</td>
+    </tr>
+</table>
 {% endblock %}

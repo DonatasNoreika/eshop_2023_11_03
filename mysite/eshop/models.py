@@ -25,9 +25,17 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user} ({self.date}) - {self.status}"
 
+    def total(self):
+        total_sum = 0
+        for line in self.lines.all():
+            total_sum += line.suma()
+        return total_sum
 
 class OrderLine(models.Model):
     order = models.ForeignKey(to="Order", on_delete=models.CASCADE, related_name="lines")
     product = models.ForeignKey(to="Product", verbose_name="Produktas", on_delete=models.SET_NULL, null=True,
                                 blank=True)
     quantity = models.IntegerField(verbose_name="Kiekis")
+
+    def suma(self):
+        return self.product.price * self.quantity
